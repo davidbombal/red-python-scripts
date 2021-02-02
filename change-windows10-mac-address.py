@@ -26,7 +26,7 @@ print("##############################################################\n")
 # If the MAC address change fails try setting the second character to 2 or 6 or A or E,
 # for example: 0A1122334455 or 0A5544332211
 # If unsure, leave the MAC addresses listed here as is.
-mac_to_change_to = ["0A1122334455", "0E1122334455", "021122334455", "061122334455", "0ADEADBEEF01", "0AFACEB00K01"]
+mac_to_change_to = ["0A1122334455", "0E1122334455", "021122334455", "061122334455"]
 
 # We create an empty list where we'll store all the MAC addresses.
 mac_addresses = list()
