@@ -20,7 +20,7 @@ print("\n* https://www.davidbombal.com                                  *")
 print("\n* https://www.youtube.com/davidbombal                          *")
 print("\n****************************************************************")
 
-# Regular Expression Pattern to recognise IPv4 addresses.
+# Regular Expression Pattern to recognize IPv4 addresses.
 ip_add_range_pattern: Pattern[str] = re.compile(
     "^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]*$"
 )
@@ -36,7 +36,7 @@ while True:
 
 
 # Try ARPing the ip address range supplied by the user.
-# The arping() method in scapy creates a pakcet with an ARP message
+# The arping() method in scapy creates a packet with an ARP message
 # and sends it to the broadcast mac address ff:ff:ff:ff:ff:ff.
 # If a valid ip address range was supplied the program will return
 # the list of all results.

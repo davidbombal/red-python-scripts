@@ -45,7 +45,7 @@ while True:
         # The following line will only execute if the ip is valid.
         print("You entered a valid ip address.")
         break
-    except:
+    except SystemError:
         print("You entered an invalid ip address")
 
 
@@ -88,7 +88,7 @@ for port in range(port_min, port_max + 1):
             # If the following line runs then then it was successful in connecting to the port.
             open_ports.append(port)
 
-    except:
+    except SystemError:
         # We don't need to do anything here. If we were interested in the closed ports we'd put something here.
         pass
 

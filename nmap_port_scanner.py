@@ -9,12 +9,12 @@ import nmap
 import re
 from typing import Pattern
 
-# Regular Expression Pattern to recognise IPv4 addresses.
+# Regular Expression Pattern to recognize IPv4 addresses.
 ip_add_pattern: Pattern[str] = re.compile("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
 # Regular Expression Pattern to extract the number of ports you want to scan.
 # You have to specify <lowest_port_number>-<highest_port_number> (ex 10-100)
 port_range_pattern: Pattern[str] = re.compile("([0-9]+)-([0-9]+)")
-# Initialising the port numbers, will be using the variables later on.
+# Initializing the port numbers, will be using the variables later on.
 port_min = 0
 port_max = 65535
 
@@ -73,6 +73,6 @@ for port in range(port_min, port_max + 1):
         # We extract the port status from the returned object
         port_status = result["scan"][ip_add_entered]["tcp"][port]["state"]
         print(f"Port {port} is {port_status}")
-    except:
+    except SystemError:
         # We cannot scan some ports and this ensures the program doesn't crash when we try to scan them.
         print(f"Cannot scan port {port}.")

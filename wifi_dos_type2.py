@@ -76,7 +76,7 @@ for file_name in os.listdir():
         try:
             # We make a new directory called /backup
             os.mkdir(directory + "/backup/")
-        except:
+        except SystemError:
             print("Backup folder exists.")
         # Create a timestamp
         timestamp = datetime.now()
@@ -115,7 +115,7 @@ while True:
     try:
         if check_wifi_result[int(wifi_interface_choice)]:
             break
-    except:
+    except SystemError:
         print("Please enter a number that corresponds with the choices.")
 
 # For easy reference we call the picked interface hacknic
@@ -128,7 +128,7 @@ print("WiFi adapter connected!\nNow let's kill conflicting processes:")
 # The script is the parent process and creates a child process which runs the system command, and will only continue once the child process has completed.
 # We run the iwconfig command to look for wireless interfaces.
 # Killing all conflicting processes using airmon-ng
-kill_confilict_processes: subprocess.CompletedProcess[bytes] = subprocess.run(
+kill_conflict_processes: subprocess.CompletedProcess[bytes] = subprocess.run(
     ["sudo", "airmon-ng", "check", "kill"]
 )
 
@@ -221,7 +221,7 @@ while True:
     try:
         if active_wireless_networks[int(choice)]:
             break
-    except:
+    except SystemError:
         print("Please try again.")
 
 # To make it easier to work with we assign the results to variables.
