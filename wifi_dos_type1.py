@@ -77,7 +77,7 @@ for file_name in os.listdir():
         shutil.move(file_name, directory + "/backup/" + str(timestamp) + "-" + file_name)
 
 # Regex to find wireless interfaces. We're making the assumption they will all be wlan0 or higher.
-wlan_pattern = re.compile("^wlan[0-9]+")
+wlan_pattern = re.compile("^(?:wlan[0-9]|wlo\d)+")
 
 # Python allows is to run system commands by using a function provided by the subprocess module. 
 # subprocess.run(<list of command line arguments goes here>)
