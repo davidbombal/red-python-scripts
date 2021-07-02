@@ -24,26 +24,6 @@ import time
 
 
 # Helper functions
-def backup_csv():
-    """Move all .csv files in the directory to a backup directory."""
-    for file_name in os.listdir():
-        # We should only have one csv file, we back them up in a backup directory every time we run the program.
-        if ".csv" in file_name:
-            print("There shouldn't be any .csv files in your directory. We found .csv files in your directory.")
-            # We get the current working directory.
-            directory = os.getcwd()
-            try:
-                # We make a new directory called /backup
-                os.mkdir(directory + "/backup/")
-            except:
-                print("Backup directory exists.")
-            # Create a timestamp
-            timestamp = datetime.now()
-            # We copy any .csv files in the folder to the backup folder.
-            shutil.move(file_name, directory + "/backup/" + str(timestamp) + "-" + file_name)
-            print(f"Moved files to {directory}/backup directory.")
-
-
 def in_sudo_mode():
     """If the user doesn't run the program with super user privileges, don't allow them to continue."""
     if not 'SUDO_UID' in os.environ.keys():
