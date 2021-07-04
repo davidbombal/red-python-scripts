@@ -76,7 +76,7 @@ for file_name in os.listdir():
 # Regex to find wireless interfaces, we're making the assumption they will all be wlan0 or higher.
 wlan_pattern = re.compile("^wlan[0-9]+")
 
-# Python allows is to run system commands by using a function provided by the subprocess module. 
+# Python allows us to run system commands by using a function provided by the subprocess module. 
 # subprocess.run(<list of command line arguments goes here>, <specify if you want the capture_output to be True>)
 # We want to capture the output. The output will be in standard UTF-8 and will decode it.
 # The script is the parent process and creates a child process which runs the system command, and will only continue once the child process has completed.
