@@ -39,7 +39,7 @@ print("\n****************************************************************")
 open_ports = []
 # Ask user to input the ip address they want to scan.
 while True:
-    ip_add_entered = input("\nPlease enter the ip address that you want to scan: ")
+    ip_add_entered = input("\nPlease enter the ip address that you want to scan: and test ")
     if ip_add_pattern.search(ip_add_entered):
         print(f"{ip_add_entered} is a valid ip address")
         break
