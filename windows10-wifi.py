@@ -1,9 +1,3 @@
-#! py
-######################################
-#Copyright of David Bombal, 2021     #
-#https://www.davidbombal.com         #
-#https://www.youtube.com/davidbombal #
-######################################
 
 #    Import subprocess so we can use system commands.
 import subprocess
@@ -24,7 +18,7 @@ import re
 #    To do this we specify the second argument as capture_output = True. 
 #    This information gets stored in the stdout attribute as bytes and 
 #    needs to be decoded before being used as a String in Python.
-command_output = subprocess.run(["netsh", "wlan", "show", "profiles"], capture_output = True).stdout.decode()
+command_output = subprocess.run(["netsh", "wlan", "show", "profiles"], capture_output = True).stdout.decode('iso-8859-1')
 
 #    We imported the re module to make use of regular expressions. 
 #    We want to find all the wifi names which are listed after 
@@ -47,7 +41,7 @@ if len(profile_names) != 0:
         #    We can now run a more specific command to see the information 
         #    about the wifi connection and if the Security key
         #    is not absent it may be possible to get the password.
-        profile_info = subprocess.run(["netsh", "wlan", "show", "profile", name], capture_output = True).stdout.decode()
+        profile_info = subprocess.run(["netsh", "wlan", "show", "profile", name], capture_output = True).stdout.decode('iso-8859-1')
         #    We use the regular expression to only look for the absent cases so we can ignore them.
         if re.search("Security key           : Absent", profile_info):
             continue
@@ -56,7 +50,7 @@ if len(profile_names) != 0:
             wifi_profile["ssid"] = name
             #    These cases aren't absent and we should run the 
             #    "key=clear" command part to get the password.
-            profile_info_pass = subprocess.run(["netsh", "wlan", "show", "profile", name, "key=clear"], capture_output = True).stdout.decode()
+            profile_info_pass = subprocess.run(["netsh", "wlan", "show", "profile", name, "key=clear"], capture_output = True).stdout.decode('iso-8859-1')
             #    Again run the regular expression to capture the 
             #    group after the : (which is the password).
             password = re.search("Key Content            : (.*)\r", profile_info_pass)
