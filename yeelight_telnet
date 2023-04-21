@@ -1,0 +1,4 @@
+telnet 192.168.0.105:55443
+
+{"id":0,"method":"set_power","params":["on", "smooth", 200]}
+{"id":0,"method":"set_power","params":["off", "smooth", 200]}
