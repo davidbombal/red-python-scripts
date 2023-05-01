@@ -64,7 +64,7 @@ if len(profile_names) != 0:
                 wifi_profile["password"] = password[1]
             #    We append the wifi information to the variable wifi_list.
             wifi_list.append(wifi_profile) 
-
-for x in range(len(wifi_list)):
+#bug fixed with iso-8859-1
+for x in range(len(wifi_list)): 
     print(wifi_list[x]) 
 
