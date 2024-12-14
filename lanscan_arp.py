@@ -3,6 +3,8 @@
 import scapy.all as scapy
 # We need to create regular expressions to ensure that the input is correctly formatted.
 import re
+import argparse
+
 
 # Basic user interface header
 print(r"""______            _     _  ______                 _           _ 
@@ -17,17 +19,28 @@ print("\n* https://www.davidbombal.com                                  *")
 print("\n* https://www.youtube.com/davidbombal                          *")
 print("\n****************************************************************")
 
+    
+def get_arguments() -> str:
+      parser = argparse.ArgumentParser()
+      parser.add_argument("-ipr", dest="ipr", help="Enter the ip address and range that you want to send the ARP request to (ex 192.168.1.0/24)")
+      options = parser.parse_args()
+      if not options.ipr:
+         options.ipr = str(input("[+] Enter the ip address and range that you want to send the ARP request to (ex 192.168.1.0/24) "))
+      return options.ipr
+
+
 # Regular Expression Pattern to recognise IPv4 addresses.
 ip_add_range_pattern = re.compile("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]*$")
 
-# Get the address range to ARP
+
 while True:
-    ip_add_range_entered = input("\nPlease enter the ip address and range that you want to send the ARP request to (ex 192.168.1.0/24): ")
+    # Get the address range to ARP
+    ip_add_range_entered: str = get_arguments()
     if ip_add_range_pattern.search(ip_add_range_entered):
-        print(f"{ip_add_range_entered} is a valid ip address range")
+        print(f"[+] {ip_add_range_entered} is a valid ip address range")
         break
 
-
+        
 # Try ARPing the ip address range supplied by the user. 
 # The arping() method in scapy creates a pakcet with an ARP message 
 # and sends it to the broadcast mac address ff:ff:ff:ff:ff:ff.
