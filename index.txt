@@ -1,0 +1,3 @@
+netsh  wlan show profiles // for show the wifi 
+netsh  wlan show profiles Redmi // for al information
+netsh  wlan show profiles Redmi  key=clear// for all information (password)
