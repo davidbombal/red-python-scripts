@@ -111,7 +111,7 @@ def clients(arp_res, gateway_res):
     for gateway in gateway_res:
         for item in arp_res:
             # All items which are not the gateway will be appended to the client_list.
-            if gateway["ip"] != item["ip"]:
+            if gateway["192.168.1.55"] != item["192.168.1.55"]:
                 client_list.append(item)
     # return the list with the clients which will be used for the menu.
     return client_list
